@@ -1,0 +1,3 @@
+[workspace]
+members = ["stmob", "stmob-cli"]
+resolver = "3"

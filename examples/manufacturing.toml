@@ -1,0 +1,13 @@
+# Manufacturing configuration for an STM32G474CE.
+#
+# Apply with:
+#   stmob --chip STM32G474CE apply examples/manufacturing.toml
+
+chip = "STM32G474CE"
+
+[options]
+rdp = "level1"
+brownout = "level4"
+bank-mode = "dual"
+boot = "main-flash"
+boot-lock = true

@@ -1,0 +1,17 @@
+# Development configuration for an STM32G474CE.
+#
+# Identical to the manufacturing configuration except that readout protection
+# is left at Level 0, so the debugger can keep flashing and debugging the
+# device.
+#
+# Apply with:
+#   stmob --chip STM32G474CE apply examples/development.toml
+
+chip = "STM32G474CE"
+
+[options]
+rdp = "level0"
+brownout = "level4"
+bank-mode = "dual"
+boot = "main-flash"
+boot-lock = true
