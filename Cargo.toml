@@ -8,7 +8,7 @@ edition = "2024"
 rust-version = "1.89"
 license = "MPL-2.0"
 readme = "README.md"
-repository = "https://github.com/umi-eng/stm32-flash-opt"
+repository = "https://github.com/umi-eng/stmob"
 
 [workspace.dependencies]
 stmob = { path = "stmob", version = "0.1.0" }

@@ -77,7 +77,7 @@ boot-lock = true
 brownout = 4            # or "level4"
 ```
 
-See the [`examples/` directory](https://github.com/umi-eng/stm32-flash-opt/tree/main/examples)
+See the [`examples/` directory](https://github.com/umi-eng/stmob/tree/main/examples)
 for complete files.
 
 ## Safety notes
