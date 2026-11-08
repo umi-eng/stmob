@@ -99,14 +99,16 @@ for complete files.
 
 ## Adding a new STM32 family
 
-1. Create a new module under `stmob/src/family/`.
+1. Create a new module under the library crate's `src/family/` directory
+   (`stmob/src/family/` in the repository).
 2. Define the option fields with `OptionField` and `FieldKind`, and the
    registers with `RegisterDescriptor`.
 3. Implement the `Family` trait. If the family uses the common STM32
    option-byte programming sequence, reuse `OptionByteController` with a
    `ControllerLayout`; otherwise implement `read_registers` and
    `write_registers` directly.
-4. Register the family in `stmob/src/family/mod.rs`.
+4. Register the family in the library crate's `src/family/mod.rs`
+   (`stmob/src/family/mod.rs` in the repository).
 
 The default `Family::decode` and `Family::encode` implementations handle all
 field types, so most families only need a declarative field list and the
