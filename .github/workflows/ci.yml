@@ -39,3 +39,8 @@ jobs:
 
       - name: Run clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+      - name: Build docs
+        run: cargo doc --workspace --no-deps --locked
+        env:
+          RUSTDOCFLAGS: "-D warnings"
