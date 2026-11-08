@@ -1,7 +1,14 @@
 [package]
 name = "stmob"
-version = "0.1.0"
-edition = "2024"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+readme.workspace = true
+repository.workspace = true
+description = "Read and modify STM32 flash option bytes over probe-rs."
+keywords = ["stm32", "flash", "option-bytes", "probe-rs", "embedded"]
+categories = ["embedded", "hardware-support"]
 
 [dependencies]
 probe-rs = "0.32.0"

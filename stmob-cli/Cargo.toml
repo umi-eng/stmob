@@ -1,13 +1,21 @@
 [package]
 name = "stmob-cli"
-version = "0.1.0"
-edition = "2024"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+readme.workspace = true
+repository.workspace = true
+description = "Command-line tool for reading and modifying STM32 flash option bytes over probe-rs."
+keywords = ["stm32", "flash", "option-bytes", "probe-rs", "cli"]
+categories = ["embedded", "hardware-support", "command-line-utilities"]
 
 [[bin]]
 name = "stmob"
 path = "src/bin/stmob/main.rs"
+doc = false
 
 [dependencies]
 anyhow = "1"
 clap = { version = "4.6.7", features = ["derive", "env"] }
-stmob = { path = "../stmob" }
+stmob.workspace = true
