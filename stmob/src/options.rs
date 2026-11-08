@@ -1,7 +1,6 @@
 use std::collections::BTreeMap;
 use std::fmt;
 
-use crate::config::ConfigValue;
 use crate::error::{Error, Result};
 
 /// A named register in a family's option-byte register map.
@@ -101,6 +100,12 @@ impl fmt::Display for OptionValue {
             Self::Enum(name) => write!(f, "{name}"),
             Self::Integer(value) => write!(f, "{value}"),
         }
+    }
+}
+
+impl From<bool> for OptionValue {
+    fn from(value: bool) -> Self {
+        Self::Bool(value)
     }
 }
 
@@ -297,24 +302,6 @@ impl OptionField {
 
                 Ok(OptionValue::Integer(value))
             }
-        }
-    }
-
-    /// Parses a TOML configuration value into a value for this field.
-    pub fn parse_config_value(&self, value: &ConfigValue) -> Result<OptionValue> {
-        match value {
-            ConfigValue::Bool(value) => self.parse_str(if *value { "true" } else { "false" }),
-            ConfigValue::Integer(value) => {
-                if *value < 0 {
-                    return Err(Error::InvalidValue {
-                        option: self.name.to_string(),
-                        value: value.to_string(),
-                        expected: "a non-negative integer".to_string(),
-                    });
-                }
-                self.parse_str(&value.to_string())
-            }
-            ConfigValue::String(value) => self.parse_str(value),
         }
     }
 

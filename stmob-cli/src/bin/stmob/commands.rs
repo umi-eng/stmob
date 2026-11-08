@@ -144,7 +144,7 @@ pub fn apply(
             let family =
                 stmob::family::find(chip).with_context(|| format!("unsupported chip {chip:?}"))?;
             let desired = config
-                .into_option_set(family)
+                .to_option_set(family)
                 .context("invalid flash-option configuration")?;
             family.validate(&desired)?;
             Some(desired)
@@ -157,7 +157,7 @@ pub fn apply(
         Some(desired) => desired,
         None => {
             let desired = config
-                .into_option_set(device.family())
+                .to_option_set(device.family())
                 .context("invalid flash-option configuration")?;
             device.family().validate(&desired)?;
             desired

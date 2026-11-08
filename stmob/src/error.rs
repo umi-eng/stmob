@@ -133,4 +133,12 @@ pub enum Error {
         #[source]
         source: toml::de::Error,
     },
+
+    /// The `[options]` table could not be parsed for the selected family.
+    #[error("failed to parse flash options: {source}")]
+    ConfigOptions {
+        /// Underlying TOML parse error.
+        #[source]
+        source: toml::de::Error,
+    },
 }

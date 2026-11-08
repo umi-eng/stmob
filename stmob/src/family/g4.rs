@@ -1,7 +1,10 @@
 use std::time::Duration;
 
 use probe_rs::Core;
+use serde::Deserialize;
+use toml::Table;
 
+use crate::config::{insert_level, insert_option};
 use crate::controller::{ControllerLayout, OptionByteController};
 use crate::error::{Error, Result};
 use crate::family::Family;
@@ -362,6 +365,142 @@ static FIELDS: &[OptionField] = &[
     },
 ];
 
+/// The typed `[options]` table for STM32G4.
+///
+/// Every field is optional; only the options that are present are applied.
+#[derive(Clone, Debug, Default, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "kebab-case")]
+pub struct G4Options {
+    /// Readout protection level (0-2).
+    pub rdp: Option<u8>,
+    /// Brownout reset threshold level (0-4).
+    pub brownout: Option<u8>,
+    /// Flash bank organization.
+    pub bank_mode: Option<BankMode>,
+    /// Boot source.
+    pub boot: Option<Boot>,
+    /// Force boot from main flash, ignoring BOOT0.
+    pub boot_lock: Option<bool>,
+    /// Generate a reset in Stop mode.
+    pub reset_in_stop: Option<bool>,
+    /// Generate a reset in Standby mode.
+    pub reset_in_standby: Option<bool>,
+    /// Generate a reset in Shutdown mode.
+    pub reset_in_shutdown: Option<bool>,
+    /// Independent watchdog controlled by software.
+    pub iwdg_software: Option<bool>,
+    /// Freeze the independent watchdog in Stop mode.
+    pub iwdg_freeze_stop: Option<bool>,
+    /// Freeze the independent watchdog in Standby mode.
+    pub iwdg_freeze_standby: Option<bool>,
+    /// Window watchdog controlled by software.
+    pub wwdg_software: Option<bool>,
+    /// Boot from flash bank 2 in dual-bank mode.
+    pub boot_from_bank2: Option<bool>,
+    /// Enable SRAM2 parity checking.
+    pub sram2_parity: Option<bool>,
+    /// Erase SRAM2 on system reset.
+    pub sram2_erase_on_reset: Option<bool>,
+}
+
+impl G4Options {
+    /// Converts the typed options into an option set for `family`.
+    pub fn to_option_set(&self, family: &dyn Family) -> Result<OptionSet> {
+        let mut set = OptionSet::new();
+
+        insert_level(&mut set, family, "rdp", self.rdp)?;
+        insert_level(&mut set, family, "brownout", self.brownout)?;
+        insert_option(&mut set, family, "bank-mode", self.bank_mode)?;
+        insert_option(&mut set, family, "boot", self.boot)?;
+        insert_option(&mut set, family, "boot-lock", self.boot_lock)?;
+        insert_option(&mut set, family, "reset-in-stop", self.reset_in_stop)?;
+        insert_option(&mut set, family, "reset-in-standby", self.reset_in_standby)?;
+        insert_option(
+            &mut set,
+            family,
+            "reset-in-shutdown",
+            self.reset_in_shutdown,
+        )?;
+        insert_option(&mut set, family, "iwdg-software", self.iwdg_software)?;
+        insert_option(&mut set, family, "iwdg-freeze-stop", self.iwdg_freeze_stop)?;
+        insert_option(
+            &mut set,
+            family,
+            "iwdg-freeze-standby",
+            self.iwdg_freeze_standby,
+        )?;
+        insert_option(&mut set, family, "wwdg-software", self.wwdg_software)?;
+        insert_option(&mut set, family, "boot-from-bank2", self.boot_from_bank2)?;
+        insert_option(&mut set, family, "sram2-parity", self.sram2_parity)?;
+        insert_option(
+            &mut set,
+            family,
+            "sram2-erase-on-reset",
+            self.sram2_erase_on_reset,
+        )?;
+
+        Ok(set)
+    }
+}
+
+/// Flash bank organization.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum BankMode {
+    /// Single-bank.
+    Single,
+    /// Dual-bank.
+    Dual,
+}
+
+impl BankMode {
+    /// The canonical name of this mode.
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Single => "single",
+            Self::Dual => "dual",
+        }
+    }
+}
+
+impl From<BankMode> for OptionValue {
+    fn from(value: BankMode) -> Self {
+        Self::Enum(value.name())
+    }
+}
+
+/// Boot source.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum Boot {
+    /// Main flash.
+    MainFlash,
+    /// BOOT0 pin.
+    Pin,
+    /// System memory.
+    SystemMemory,
+    /// SRAM.
+    Sram,
+}
+
+impl Boot {
+    /// The canonical name of this source.
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::MainFlash => "main-flash",
+            Self::Pin => "pin",
+            Self::SystemMemory => "system-memory",
+            Self::Sram => "sram",
+        }
+    }
+}
+
+impl From<Boot> for OptionValue {
+    fn from(value: Boot) -> Self {
+        Self::Enum(value.name())
+    }
+}
+
 /// STM32G4 family.
 pub struct G4Family;
 
@@ -379,6 +518,13 @@ impl Family for G4Family {
 
     fn fields(&self) -> &'static [OptionField] {
         FIELDS
+    }
+
+    fn parse_config(&self, options: &Table) -> Result<OptionSet> {
+        let options: G4Options = toml::Value::Table(options.clone())
+            .try_into()
+            .map_err(|source| Error::ConfigOptions { source })?;
+        options.to_option_set(self)
     }
 
     fn read_registers(&self, core: &mut Core<'_>) -> Result<RegisterMap> {

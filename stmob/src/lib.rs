@@ -30,10 +30,11 @@ pub mod options;
 /// Probe discovery and session handling.
 pub mod probe;
 
-pub use config::{Config, ConfigValue};
+pub use config::Config;
 pub use device::{Device, WriteOptions, WriteReport};
 pub use error::{Error, Result};
 pub use family::Family;
+pub use family::g4::{BankMode, Boot, G4Options};
 pub use options::{
     EnumVariant, FieldKind, OptionField, OptionSet, OptionValue, RegisterDescriptor, RegisterMap,
 };

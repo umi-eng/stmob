@@ -10,8 +10,8 @@
 chip = "STM32G474CE"
 
 [options]
-rdp = "level0"
-brownout = "level4"
+rdp = 0
+brownout = 4
 bank-mode = "dual"
 boot = "main-flash"
 boot-lock = true

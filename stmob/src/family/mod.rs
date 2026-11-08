@@ -23,6 +23,13 @@ pub trait Family: Send + Sync {
     /// All options supported by this family.
     fn fields(&self) -> &'static [OptionField];
 
+    /// Parses the `[options]` table from a configuration file.
+    ///
+    /// Each family defines its own option names and value types, so the
+    /// configuration schema lives with the family rather than in the generic
+    /// configuration module.
+    fn parse_config(&self, options: &toml::Table) -> Result<OptionSet>;
+
     /// Reads the option-byte registers from the device.
     fn read_registers(&self, core: &mut Core<'_>) -> Result<RegisterMap>;
 

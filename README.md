@@ -63,8 +63,8 @@ scripts work unchanged: `PROBE_RS_CHIP`, `PROBE_RS_PROBE`, `PROBE_RS_SPEED`,
 chip = "STM32G474CE"
 
 [options]
-rdp = "level1"
-brownout = "level4"
+rdp = 1
+brownout = 4
 bank-mode = "dual"
 boot = "main-flash"
 boot-lock = true
@@ -72,15 +72,19 @@ boot-lock = true
 
 The `chip` field is optional. If it is omitted and `--chip` is not given,
 probe-rs auto-detects the target. Only the options present in `[options]` are
-changed; every other option bit is preserved. Values can be written as strings,
-booleans, or integers:
+changed; every other option bit is preserved. The `[options]` table is parsed
+by the selected family, so each family defines its own option names and value
+types. Option names and values are validated while the file is parsed, so typos
+and unsupported values are reported before a probe is opened. Enum options
+accept their name, numeric levels are integers, and boolean options accept
+`true` or `false`:
 
 ```toml
 [options]
-rdp = "level1"          # or 0xBB
-bank-mode = "dual"      # or 1
+rdp = 1                 # 0-2
+bank-mode = "dual"
 boot-lock = true
-brownout = 4            # or "level4"
+brownout = 4            # 0-4
 ```
 
 See the [`examples/` directory](https://github.com/umi-eng/stmob/tree/main/examples)
@@ -109,11 +113,13 @@ for complete files.
    (`stmob/src/family/` in the repository).
 2. Define the option fields with `OptionField` and `FieldKind`, and the
    registers with `RegisterDescriptor`.
-3. Implement the `Family` trait. If the family uses the common STM32
+3. Define the family's typed `[options]` schema (see `G4Options`) and implement
+   `Family::parse_config` to convert it into an `OptionSet`.
+4. Implement the `Family` trait. If the family uses the common STM32
    option-byte programming sequence, reuse `OptionByteController` with a
    `ControllerLayout`; otherwise implement `read_registers` and
    `write_registers` directly.
-4. Register the family in the library crate's `src/family/mod.rs`
+5. Register the family in the library crate's `src/family/mod.rs`
    (`stmob/src/family/mod.rs` in the repository).
 
 The default `Family::decode` and `Family::encode` implementations handle all

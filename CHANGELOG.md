@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Configuration options are now strongly typed. Unknown option names and
+  invalid values are rejected while the file is parsed, and the loose
+  `ConfigValue` type has been replaced by a family-specific option schema
+  (`G4Options` for STM32G4) parsed through `Family::parse_config`.
+- Configuration values now use a single representation per option: named
+  enums for categorical options, integers for numeric levels, and booleans
+  for flags. The previous string-or-raw-value forms are no longer accepted.
+- `rdp` and `brownout` are integer levels (`0`-`2` and `0`-`4`
+  respectively); `bank-mode` and `boot` are named enums.
+
 ## [0.1.0] - 2026-11-09
 
 ### Added
