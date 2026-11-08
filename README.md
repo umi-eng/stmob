@@ -11,6 +11,22 @@ The workspace is split into two crates:
 - `stmob-cli` — the `stmob` binary. It contains the clap command-line
   interface and output formatting.
 
+## Installation
+
+Install the command-line tool from crates.io:
+
+```sh
+cargo install stmob-cli
+```
+
+This installs the `stmob` binary. To use the library in another crate:
+
+```sh
+cargo add stmob
+```
+
+The minimum supported Rust version is 1.89.
+
 ## Usage
 
 ```text
