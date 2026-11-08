@@ -8,27 +8,27 @@ use stmob::{ProbeOptions, ProbeSelector, Protocol};
 #[derive(Args, Debug)]
 pub struct ProbeArgs {
     /// Target chip, e.g. STM32G474CE. If omitted, probe-rs auto-detects it.
-    #[arg(short = 'c', long, env = "STMOB_CHIP")]
+    #[arg(short = 'c', long, env = "PROBE_RS_CHIP")]
     pub chip: Option<String>,
 
     /// Probe to use: zero-based index or `VID:PID[:SERIAL]`.
-    #[arg(short = 'p', long, env = "STMOB_PROBE")]
+    #[arg(short = 'p', long, env = "PROBE_RS_PROBE")]
     pub probe: Option<String>,
 
     /// Debug probe speed in kHz.
-    #[arg(long, env = "STMOB_SPEED")]
+    #[arg(long, env = "PROBE_RS_SPEED")]
     pub speed: Option<u32>,
 
     /// Wire protocol to use.
-    #[arg(long, value_enum, env = "STMOB_PROTOCOL")]
+    #[arg(long, value_enum, env = "PROBE_RS_PROTOCOL")]
     pub protocol: Option<ProtocolArg>,
 
     /// Attach to the target under reset.
-    #[arg(long)]
+    #[arg(long, env = "PROBE_RS_CONNECT_UNDER_RESET")]
     pub connect_under_reset: bool,
 
     /// Allow probe-rs to erase all memory.
-    #[arg(long)]
+    #[arg(long, env = "PROBE_RS_ALLOW_ERASE_ALL")]
     pub allow_erase_all: bool,
 }
 

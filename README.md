@@ -46,9 +46,10 @@ These mirror the relevant probe-rs options:
 | `--connect-under-reset` | Attach to the target under reset.                                      |
 | `--allow-erase-all`     | Allow probe-rs to erase all memory.                                    |
 
-The equivalent environment variables are `STMOB_CHIP`,
-`STMOB_PROBE`, `STMOB_SPEED`, and
-`STMOB_PROTOCOL`.
+These options use the same environment variables as probe-rs, so existing
+scripts work unchanged: `PROBE_RS_CHIP`, `PROBE_RS_PROBE`, `PROBE_RS_SPEED`,
+`PROBE_RS_PROTOCOL`, `PROBE_RS_CONNECT_UNDER_RESET`, and
+`PROBE_RS_ALLOW_ERASE_ALL`.
 
 ## Configuration files
 
