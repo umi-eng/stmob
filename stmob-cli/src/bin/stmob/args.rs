@@ -11,7 +11,7 @@ pub struct ProbeArgs {
     #[arg(short = 'c', long, env = "STMOB_CHIP")]
     pub chip: Option<String>,
 
-    /// Probe to use: zero-based index or VID:PID[:SERIAL].
+    /// Probe to use: zero-based index or `VID:PID[:SERIAL]`.
     #[arg(short = 'p', long, env = "STMOB_PROBE")]
     pub probe: Option<String>,
 
