@@ -1,5 +1,10 @@
 # stmob
 
+[![CI](https://github.com/umi-eng/stmob/actions/workflows/ci.yml/badge.svg)](https://github.com/umi-eng/stmob/actions/workflows/ci.yml)
+[![crates.io](https://img.shields.io/crates/v/stmob.svg)](https://crates.io/crates/stmob)
+[![crates.io](https://img.shields.io/crates/v/stmob-cli.svg)](https://crates.io/crates/stmob-cli)
+[![docs.rs](https://docs.rs/stmob/badge.svg)](https://docs.rs/stmob)
+
 A command-line tool for reading and modifying STM32 flash option bytes over
 [probe-rs](https://probe.rs/).
 
