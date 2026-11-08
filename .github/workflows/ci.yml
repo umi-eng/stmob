@@ -68,6 +68,24 @@ jobs:
         env:
           RUSTDOCFLAGS: "-D warnings"
 
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Package library
+        run: cargo package -p stmob --locked
+
+      # The CLI depends on the published version of `stmob`. Patch it to the
+      # local library so the package can be verified before release.
+      - name: Package CLI
+        run: cargo package -p stmob-cli --locked --config 'patch.crates-io.stmob.path="stmob"'
+
   msrv:
     name: MSRV
     runs-on: ubuntu-latest
