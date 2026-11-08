@@ -7,4 +7,4 @@ edition = "2024"
 probe-rs = "0.32.0"
 serde = { version = "1", features = ["derive"] }
 thiserror = "2"
-toml = "0.9"
+toml = "1.2"
