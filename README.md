@@ -113,3 +113,7 @@ for complete files.
 The default `Family::decode` and `Family::encode` implementations handle all
 field types, so most families only need a declarative field list and the
 register read/write primitives.
+
+## License
+
+Licensed under the [Mozilla Public License 2.0](LICENSE).
