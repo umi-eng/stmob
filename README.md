@@ -115,6 +115,10 @@ The default `Family::decode` and `Family::encode` implementations handle all
 field types, so most families only need a declarative field list and the
 register read/write primitives.
 
+## Changelog
+
+See the [changelog](https://github.com/umi-eng/stmob/blob/main/CHANGELOG.md).
+
 ## License
 
 Licensed under the [Mozilla Public License 2.0](LICENSE).
