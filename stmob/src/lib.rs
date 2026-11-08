@@ -13,12 +13,21 @@
 //!
 //! [`config`] provides the TOML configuration format used by the CLI.
 
+#![warn(missing_docs)]
+
+/// TOML configuration format used by the CLI.
 pub mod config;
+/// Low-level option-byte controller helpers.
 pub mod controller;
+/// High-level device operations.
 pub mod device;
+/// Error and result types.
 pub mod error;
+/// Device-family definitions.
 pub mod family;
+/// Option-byte field and value model.
 pub mod options;
+/// Probe discovery and session handling.
 pub mod probe;
 
 pub use config::{Config, ConfigValue};

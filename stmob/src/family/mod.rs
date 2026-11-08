@@ -1,3 +1,4 @@
+/// STM32G4 family implementation.
 pub mod g4;
 
 use probe_rs::Core;

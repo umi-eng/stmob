@@ -33,27 +33,41 @@ pub struct OptionField {
 #[derive(Clone, Copy, Debug)]
 pub enum FieldKind {
     /// A single bit. `inverted` flips the logical value relative to the bit.
-    Bool { bit: u8, inverted: bool },
+    Bool {
+        /// Bit position within the register.
+        bit: u8,
+        /// Whether the logical value is inverted relative to the bit.
+        inverted: bool,
+    },
     /// A contiguous bit field with named values.
     Enum {
+        /// Offset of the field within the register.
         offset: u8,
+        /// Width of the field in bits.
         width: u8,
+        /// Named values for the field.
         variants: &'static [EnumVariant],
         /// Maps a raw field value to a canonical variant value for display.
         normalize: Option<fn(u32) -> u32>,
     },
     /// A non-contiguous set of bits with named values.
     MaskedEnum {
+        /// Bit mask selecting the field.
         mask: u32,
+        /// Named values for the field.
         variants: &'static [EnumVariant],
         /// Maps a raw masked value to a canonical variant value for display.
         normalize: Option<fn(u32) -> u32>,
     },
     /// A contiguous bit field holding a raw integer.
     Integer {
+        /// Offset of the field within the register.
         offset: u8,
+        /// Width of the field in bits.
         width: u8,
+        /// Minimum accepted value.
         min: u32,
+        /// Maximum accepted value.
         max: u32,
     },
 }

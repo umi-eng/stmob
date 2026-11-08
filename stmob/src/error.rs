@@ -18,11 +18,19 @@ pub enum Error {
 
     /// A probe index was requested that does not exist.
     #[error("probe index {index} is out of range; only {count} probe(s) found")]
-    ProbeIndexOutOfRange { index: usize, count: usize },
+    ProbeIndexOutOfRange {
+        /// Requested probe index.
+        index: usize,
+        /// Number of probes that were found.
+        count: usize,
+    },
 
     /// A probe selector could not be parsed.
     #[error("invalid probe selector {selector:?}; expected an index or VID:PID[:SERIAL]")]
-    InvalidProbeSelector { selector: String },
+    InvalidProbeSelector {
+        /// The selector that failed to parse.
+        selector: String,
+    },
 
     /// The chip is not handled by any registered family.
     #[error("unsupported chip {0:?}; no STM32 flash-option family is registered for it")]
@@ -30,13 +38,21 @@ pub enum Error {
 
     /// An option name was not recognised.
     #[error("unknown flash option {name:?}; available options: {available}")]
-    UnknownOption { name: String, available: String },
+    UnknownOption {
+        /// The unknown option name.
+        name: String,
+        /// Comma-separated list of available option names.
+        available: String,
+    },
 
     /// An option value was not valid for the field.
     #[error("invalid value {value:?} for option {option:?}; expected {expected}")]
     InvalidValue {
+        /// The option name.
         option: String,
+        /// The invalid value.
         value: String,
+        /// Description of the accepted values.
         expected: String,
     },
 
@@ -87,7 +103,12 @@ pub enum Error {
 
     /// The values read back after programming did not match what was written.
     #[error("verification failed: expected {expected}, read back {actual}")]
-    VerificationFailed { expected: String, actual: String },
+    VerificationFailed {
+        /// Expected register values.
+        expected: String,
+        /// Values read back from the device.
+        actual: String,
+    },
 
     /// RDP regression did not leave the device at Level 0.
     #[error("RDP regression failed: device is still not at Level 0")]
@@ -96,7 +117,9 @@ pub enum Error {
     /// The configuration file could not be read.
     #[error("failed to read configuration file {path:?}: {source}")]
     ConfigRead {
+        /// Path to the configuration file.
         path: String,
+        /// Underlying I/O error.
         #[source]
         source: std::io::Error,
     },
@@ -104,7 +127,9 @@ pub enum Error {
     /// The configuration file could not be parsed.
     #[error("failed to parse configuration file {path:?}: {source}")]
     ConfigParse {
+        /// Path to the configuration file.
         path: String,
+        /// Underlying TOML parse error.
         #[source]
         source: toml::de::Error,
     },
